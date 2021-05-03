@@ -1,0 +1,37 @@
+header {
+  padding: 10px;
+  text-align: center;
+  background-color: #05386b;
+  color: #edf5e1;
+}
+
+body {
+  background-color: #379683;
+}
+
+.item {
+  margin: 10px;
+  background-color: #46bea6;
+  border: #8ee4af solid 2px;
+  border-radius: 5px;
+  text-align: center;
+  width: 250px;
+  height: 250px;
+}
+
+.item h3 {
+  color: #05386b;
+  margin-top: 20px;
+  margin-bottom: 3px;
+  font-size: 1.9rem;
+}
+
+.item h4 {
+  color: #05386b;
+  margin-bottom: 3px;
+  font-size: 1.2rem;
+}
+
+.item p {
+  color: #05386b;
+}

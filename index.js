@@ -121,7 +121,7 @@ function getHtmlData(employees) {
   for (let i = 0; i < employees.length; i++) {
     switch (employees[i].getRole()) {
       case "Manager":
-        employeeGen += `<div class="item">
+        employeeGen += `<div class="item col">
         <h3>${employees[i].getName()}</h3>
         <h4>Manager</h4>
         <p>ID: ${employees[i].getId()}</p>
@@ -130,7 +130,7 @@ function getHtmlData(employees) {
       </div>`;
         break;
       case "Engineer":
-        employeeGen += `<div class="item">
+        employeeGen += `<div class="item col">
         <h3>${employees[i].getName()}</h3>
         <h4>Engineer</h4>
         <p>ID: ${employees[i].getId()}</p>
@@ -139,7 +139,7 @@ function getHtmlData(employees) {
       </div>`;
         break;
       case "Intern":
-        employeeGen += `<div class="item">
+        employeeGen += `<div class="item col">
         <h3>${employees[i].getName()}</h3>
         <h4>Intern</h4>
         <p>ID: ${employees[i].getId()}</p>
@@ -160,6 +160,11 @@ function getHtmlData(employees) {
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      />
+      <link rel="stylesheet" href="./style.css" />
       <title>Document</title>
     </head>
     <body>
@@ -167,8 +172,11 @@ function getHtmlData(employees) {
         <h1>MY TEAM</h1>
       </header>
   
-      <section class="container"></section>
+      <section class="container">
+      <div class="row">
       ${employeeGen}
+      </div>
+      </section>
     </body>
   </html>`;
 }
