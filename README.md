@@ -22,6 +22,10 @@ Generates a team profile summary in a styled html document.
 - Html, javascript, css
 - Node, inquirer, jest
 
+## Important resources
+
+[Inquirer Loop Question](http://www.penandpaperprogrammer.com/blog/2018/12/16/repeating-questions-with-inquirerjs)
+
 ## Contribution
 
 Jon Waaler

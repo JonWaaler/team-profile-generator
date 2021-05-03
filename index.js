@@ -1,28 +1,14 @@
+// Includes
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+// Classes that inherit from Employee class
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 
 // all employees are added and organized into this a
-var employees = [];
-
-// TODO: prompt user for team members and their information
-// inquirer
-//   .prompt([])
-//   .then((answers) => {
-//     // Use user feedback for... whatever!!
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-
-// TODO: Generate HTML File that displays a nicely formatted team roster based on user input
-
-// TODO: The HTML file contains Emails that should open up the users default email app
-
-// http://www.penandpaperprogrammer.com/blog/2018/12/16/repeating-questions-with-inquirerjs
+var employeesArr = [];
 
 const collectInputs = async (inputs = []) => {
   const prompts = [
@@ -30,13 +16,13 @@ const collectInputs = async (inputs = []) => {
     {
       type: "input",
       name: "employeeName",
-      message: "What is Employee: " + 1 + "'s Name?",
+      message: "What is Employee's Name?",
     },
     // Get employee Email
     {
       type: "input",
       name: "employeeEmail",
-      message: "What is Employee: " + 1 + "'s Email address?",
+      message: "What is Employee's Email address?",
     },
     {
       type: "list",
@@ -47,14 +33,14 @@ const collectInputs = async (inputs = []) => {
     // Get employee other Github Username
     {
       type: "input",
-      name: "spcialInfo",
+      name: "specialInfo",
       message:
         "If Manager enter: office number, if Engineer enter: github username, if intern enter: school name.",
     },
     {
       type: "confirm",
       name: "again",
-      message: "Enter another input? ",
+      message: "Do you have another Employee to add?",
       default: true,
     },
   ];
@@ -81,33 +67,121 @@ const main = async () => {
   // debug
   console.log(inputs);
 
-  // Create html structure
-  var htmlData = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>
-      ${inputs[0].employeeName}
-      ${inputs[0].employeeType}
-      ${inputs[0].employeeEmail}
-      ${inputs[0].spcialInfo}
-    </p>
-</body>
-</html>`;
+  for (let i = 0; i < inputs.length; i++) {
+    switch (inputs[i].employeeType) {
+      case "Manager":
+        employeesArr.push(
+          new Manager(
+            inputs[i].employeeName,
+            i,
+            inputs[i].employeeEmail,
+            inputs[i].specialInfo
+          )
+        );
+        break;
+      case "Engineer":
+        employeesArr.push(
+          new Engineer(
+            inputs[i].employeeName,
+            i,
+            inputs[i].employeeEmail,
+            inputs[i].specialInfo
+          )
+        );
+        break;
+      case "Intern":
+        employeesArr.push(
+          new Intern(
+            inputs[i].employeeName,
+            i,
+            inputs[i].employeeEmail,
+            inputs[i].specialInfo
+          )
+        );
+        break;
 
+      default:
+        console.log(
+          "Error, employee type undifined for name:" + inputs[i].employeeName
+        );
+        break;
+    }
+  }
+
+  console.log("\n\nEmployeesArray:");
+  console.log(employeesArr);
+
+  handleHtmlDocument(getHtmlData(employeesArr));
+};
+
+function getHtmlData(employees) {
+  var employeeGen = ``;
+
+  // Loops through employees array
+  for (let i = 0; i < employees.length; i++) {
+    switch (employees[i].getRole()) {
+      case "Manager":
+        employeeGen += `<div class="item">
+        <h3>${employees[i].getName()}</h3>
+        <h4>Manager</h4>
+        <p>ID: ${employees[i].getId()}</p>
+        <p>Email: ${employees[i].getEmail()}</p>
+        <p>Github: ${employees[i].getOfficeNumber()}</p>
+      </div>`;
+        break;
+      case "Engineer":
+        employeeGen += `<div class="item">
+        <h3>${employees[i].getName()}</h3>
+        <h4>Engineer</h4>
+        <p>ID: ${employees[i].getId()}</p>
+        <p>Email: ${employees[i].getEmail()}</p>
+        <p>Github: ${employees[i].getGitUsername()}</p>
+      </div>`;
+        break;
+      case "Intern":
+        employeeGen += `<div class="item">
+        <h3>${employees[i].getName()}</h3>
+        <h4>Intern</h4>
+        <p>ID: ${employees[i].getId()}</p>
+        <p>Email: ${employees[i].getEmail()}</p>
+        <p>Github: ${employees[i].getSchool()}</p>
+      </div>`;
+        break;
+
+      default:
+        console.log("Err: Employee role undefined. index:" + i);
+        break;
+    }
+  }
+
+  return `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+    </head>
+    <body>
+      <header>
+        <h1>MY TEAM</h1>
+      </header>
+  
+      <section class="container"></section>
+      ${employeeGen}
+    </body>
+  </html>`;
+}
+
+function handleHtmlDocument(data) {
   ClearHtmlFile();
 
   // Create HTML page with user information using collected inputs
-  fs.appendFile("index.html", htmlData, (err) => {
+  fs.appendFile("index.html", data, (err) => {
     if (err) {
       console.log(err);
     }
   });
-};
+}
 
 main();
